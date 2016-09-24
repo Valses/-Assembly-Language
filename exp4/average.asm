@@ -1,0 +1,49 @@
+PUBLIC   AVERAGE
+
+;子程序名字:AVERAGE
+;功能:将以SI为指针的字节存储区中的分数求平均数
+;入口参数:SI :指向字节存储区的首址
+;出口参数:	SI:为-1的时候表示输入有错误
+
+;所用寄存器:EBX:存放正在被转换的数字 EAX:存放分数  
+
+;本模块代码提供者：尹丹丽
+;同组成员：张雅昕，华苗
+
+	
+.386
+DATA SEGMENT USE16 PARA PUBLIC 'DATA'
+DATA ENDS
+CODE SEGMENT USE16 PARA PUBLIC 'CODE'
+	ASSUME CS:CODE,DS:DATA
+
+AVERAGE PROC NEAR 
+		PUSH EBX
+		PUSH EAX
+;求平均数的循环体		
+F2L1:
+		XOR EAX,EAX
+		MOV AL,[SI+12]
+		SHL AX,2
+		XOR EBX,EBX
+		MOV BL,[SI+13]
+		SHL BX,1
+		ADD AX,BX
+		XOR EBX,EBX
+		MOV BL,[SI+14]
+		ADD AX,BX
+		MOV DL,7
+		DIV DL
+		MOV [SI+15],AL
+		ADD SI,16
+		CMP SI,80
+		JB F2L1
+;循环体结束	
+		MOV SI,1
+OK:		
+		POP EAX
+		POP EBX
+		RET
+AVERAGE ENDP
+CODE	ENDS
+		END
